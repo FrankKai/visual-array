@@ -8,4 +8,4 @@ canvas可视化数组。
 - 可以选择暴露出底部的index: all, 头尾, 关闭
 - 可以自定义数组顶部的文字：{index0: value0, index1: value1}
 - 可以旋转: 横向 纵向
-
+- 支持导出图片
