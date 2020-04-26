@@ -3,10 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>数组可视化g</title>
   </head>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+    #root {
+      height: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+  </style>
   <body>
-    <div id="container"></div>
+    <div id="root">
+      <div id="container"></div>
+      <button id="export">导出图片</button>
+    </div>
   </body>
   <script src="./visual-array.js"></script>
   <script>
@@ -22,5 +37,8 @@
       { font: "20px math", strokeStyle: "black", lineWidth: 1 }
     );
     console.log(visualArray);
+    document.getElementById("export").addEventListener("click", () => {
+      visualArray.exportImage();
+    });
   </script>
 </html>

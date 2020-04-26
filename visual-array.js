@@ -129,4 +129,17 @@ class VisualArray {
     const container = document.getElementById(id);
     container.appendChild(this.canvas);
   }
+  /**
+   * 导出图片
+   */
+  exportImage() {
+    this.canvas.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.setAttribute("href", url);
+      a.setAttribute("download", `visual-array-${+new Date()}.jpg`);
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  }
 }
