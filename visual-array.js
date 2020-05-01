@@ -1,6 +1,5 @@
 class VisualArray {
   /**
-   * @param { String } canvasId
    * @param { String } containerId
    * @param { Array } array
    * @param { Number } cw
@@ -11,7 +10,6 @@ class VisualArray {
    */
 
   constructor(
-    canvasId,
     containerId,
     array,
     cw = 30,
@@ -20,7 +18,7 @@ class VisualArray {
     topText,
     customStyle = { font: "30px math", strokeStyle: "black", lineWidth: 1 }
   ) {
-    if (!canvasId || !containerId) return;
+    if (!containerId) return;
     if (!Array.isArray(array)) return;
     this.bottomIndex = bottomIndex || "head tail";
     this.topText = topText || {
@@ -29,8 +27,10 @@ class VisualArray {
     };
     this.length = array.length;
     this.numberFont = parseInt(customStyle.font.replace("px", ""));
-
-    this.canvas = document.createElement("canvas");
+    // 若已经存在则不重新创建canvas
+    this.canvas =
+      document.getElementById(containerId).children[0] ||
+      document.createElement("canvas");
     const { width, height } = VisualArray.calculateCanvas(
       this.length,
       cw,
@@ -41,8 +41,10 @@ class VisualArray {
     );
     this.canvas.width = width;
     this.canvas.height = height + 2 * customStyle.lineWidth;
-    this.canvas.id = canvasId;
-    document.body.appendChild(this.canvas);
+    const isCanvasExist = VisualArray.checkCanvasExist(containerId);
+    if (!isCanvasExist) {
+      document.body.appendChild(this.canvas);
+    }
     this.ctx = this.canvas.getContext("2d");
     this.ctx.font = customStyle.font;
     this.ctx.textAlign = "center";
@@ -50,7 +52,9 @@ class VisualArray {
     this.generateArray(array, cw, ch, this.topText, customStyle);
     this.generateText(this.topText, cw);
     this.generateIndex(cw, ch, this.bottomIndex, this.topText);
-    this.appendToContainer(containerId);
+    if (!isCanvasExist) {
+      this.appendToContainer(containerId);
+    }
   }
   /**
    * 计算canvas宽度和高度
@@ -66,6 +70,13 @@ class VisualArray {
     }
     const height = canvasHeight;
     return { width, height };
+  }
+  /**
+   * 检查是否已经添加
+   */
+  static checkCanvasExist(id) {
+    const container = document.getElementById(id);
+    return container.children.length >= 1;
   }
   /**
    * 生成数组
@@ -141,5 +152,13 @@ class VisualArray {
       a.click();
       URL.revokeObjectURL(url);
     });
+  }
+  /**
+   * 清空画布
+   */
+  clearCanvas() {
+    if (this.ctx) {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
   }
 }

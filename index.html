@@ -3,42 +3,127 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>数组可视化g</title>
+    <title>数组可视化</title>
   </head>
   <style>
-    html,
-    body {
-      height: 100%;
+    *{
+      padding:0;
+      margin:0;
+      box-sizing:border-box;
     }
-    #root {
-      height: inherit;
+    body{
+      background:yellowgreen;
+    }
+    button{
+      padding: 2px 10px;
+    }
+    .container {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .factory-content__array_container::after{
+      content:"  数组元素逗号分隔,支持输入 5,3,1,4,2 或 [5,3,1,4,2]";
+      font-size:12px;
+    }
+    .factory-footer{
+      margin-top:100px;
+    }
+    main{
+      flex-grow: 1;
       display: flex;
       align-items: center;
       justify-content: space-around;
     }
+    #canvas{
+      background: #fff;
+      border-radius: 5px;
+      padding: 10px;
+    }
+    footer{
+      text-align: center;
+    }
   </style>
   <body>
-    <div id="root">
-      <div id="container"></div>
-      <button id="export">导出图片</button>
+    <div class="container"">
+      <header>
+        <h1>数组可视化小工具</h1>
+        <div class="factory">
+          <div class="factory-content">
+            <p class="factory-content__array_container"><span>数组  </span><input class="factory-content__array_input" type="text"></p>
+          </div>
+          <div class="factory-footer">
+            <button id="generate">生成</button>
+            <button id="clear">清空</button>
+          </div>
+        </div>
+      </header>
+      <main>
+        <div id="canvas"></div>
+        <button id="export">导出图片</button>
+      </main>
+      <footer>
+        <p><span>Github地址:  </span><a href="https://github.com/FrankKai/visual-array">visual-array</a></p>
+      </footer>
     </div>
   </body>
   <script src="./visual-array.js"></script>
   <script>
-    const arr = [2, 3, 1, 5, 6, 9, 2, 6, 7];
-    const visualArray = new VisualArray(
-      "canvas",
-      "container",
-      arr,
-      60,
-      60,
-      "all",
-      null,
-      { font: "20px math", strokeStyle: "black", lineWidth: 1 }
-    );
-    console.log(visualArray);
+    // const arr = [2, 3, 1, 5, 6, 9, 2, 6, 7];
+    // const visualArray = new VisualArray("canvas", arr, 60, 60, "all", null, {
+    //   font: "20px math",
+    //   strokeStyle: "black",
+    //   lineWidth: 1,
+    // });
+    // console.log(visualArray);
+    const canvasConfig = {
+      array: null,
+      cw: null,
+      ch: null,
+      bottomIndex: null,
+      topText: null,
+      customStyle: null,
+      _canvas: null
+    };
+
+    // 输入需要可视化的数组
+    const factoryArray = document.querySelector(".factory-content__array_input");
+    factoryArray.addEventListener('input',(e)=>{
+      try{
+        canvasConfig.array = e.target.value.replace(/\[|\]/g,"").split(",").filter((str)=> str).map((num)=>parseInt(num.trim()));
+      }catch(error){
+        throw new Error(error)
+      }
+    })
+    // 生成可视化数组图
+    document.getElementById('generate').addEventListener("click", () => {
+      // 先清空
+      if(canvasConfig._canvas){
+        canvasConfig._canvas.clearCanvas();
+      }
+      const visualArray = new VisualArray("canvas", canvasConfig.array, 60, 60, "all", null, {
+        font: "20px math",
+        strokeStyle: "black",
+        lineWidth: 1,
+      });
+      canvasConfig._canvas = visualArray;
+    });
+    // 清空画布
+    document.getElementById('clear').addEventListener("click", () => {
+      if(canvasConfig._canvas){
+        canvasConfig._canvas.clearCanvas();
+        // 清空input数据
+        factoryArray.value = "";
+        // 清空存储的数据
+        canvasConfig.array = null;
+      }
+    });
+    // 导出图片
     document.getElementById("export").addEventListener("click", () => {
-      visualArray.exportImage();
+      if(canvasConfig._canvas){
+        canvasConfig._canvas.exportImage();
+      }
     });
   </script>
 </html>
