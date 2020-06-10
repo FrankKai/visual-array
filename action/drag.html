@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>canvas拖拽</title>
+  </head>
+  <body>
+    <img
+      id="source"
+      src="https://crm.weidiango.com/static/img/defaultProduct.33f0dfd.png"
+      style="display: none;"
+      crossorigin="Anonymous"
+    />
+    <canvas id="canvas" width="260" height="208"></canvas>
+  </body>
+  <script>
+    generatePicture();
+    function generatePicture() {
+      const cargo = {
+          offset: 0,
+          dHeight: 0,
+          downY: 0,
+      };
+
+      function render(ctx, offset, image, cargo) {
+        ctx.clearRect(0, 0, 260, 208);
+        const rate = parseFloat((image.width / 260).toFixed(10));
+        const dHeight = parseFloat(image.height / rate).toFixed(10);
+        cargo.dHeight = dHeight;
+        ctx.drawImage(image, 0, offset, 260, dHeight);
+      }
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      const image = document.getElementById("source");
+      image.onload = () => {
+        render(ctx, 0, image, cargo);
+      };
+
+      ctx.clearRect(0, 0, 260, 208);
+
+      let lastOffsetY = 0;
+
+      const handleMousemove = (e) => {
+        const currentOffsetY = e.offsetY;
+        cargo.offset = cargo.offset + (currentOffsetY - lastOffsetY);
+        const topBorder = 0;
+        const bottomBorder = -cargo.dHeight + 208;
+        if (cargo.offset < topBorder && cargo.offset > bottomBorder) {
+          render(ctx, cargo.offset, image, cargo);
+        } else if (cargo.offset < bottomBorder) {
+          cargo.offset = bottomBorder;
+        } else if (cargo.offset > topBorder) {
+          cargo.offset = topBorder;
+        }
+        lastOffsetY = e.offsetY;
+      };
+
+      canvas.addEventListener("mousedown", (e) => {
+        console.log("帅哥按下了鼠标：", "x:", e.offsetX, "y:", e.offsetY);
+        lastOffsetY = e.offsetY;
+        cargo.downY = e.offsetY;
+        canvas.addEventListener("mousemove", handleMousemove);
+      });
+
+      canvas.addEventListener("mouseup", (e) => {
+        console.log("帅哥松开了鼠标：", "y:", e.offsetY);
+        canvas.removeEventListener("mousemove", handleMousemove);
+      });
+      canvas.addEventListener("mouseleave", (e) => {
+        console.log("帅哥离开了画布：", "y:", e.offsetY);
+        canvas.removeEventListener("mousemove", handleMousemove);
+      });
+    }
+  </script>
+</html>
