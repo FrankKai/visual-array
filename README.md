@@ -9,10 +9,9 @@ canvas可视化数组。
 - 可以自定义数组顶部的文字：{index0: value0, index1: value1}
 - 支持导出图片
 - 增加生成、清空按钮
-- 增加可视化数组表单：数组
+- 增加可视化数组表单：数组、cw和ch、customStyle、bottomIndex，topText
 
 ## 亟需完成
-- 增加可视化数组表单：数组✅、cw和ch、customStyle、bottomIndex，topText
 - 增加unshift、push、shift、pop、splice功能
 - 增加旋转功能：横向、竖向
 

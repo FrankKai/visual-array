@@ -104,7 +104,7 @@ class VisualArray {
     if (!topText.show) return;
     let keys = Object.keys(topText.data);
     keys.forEach((key) => {
-      console.log(key);
+      // console.log(key);
       this.ctx.fillText(
         topText.data[key],
         (parseInt(key) + 0.5) * cw,

@@ -24,11 +24,19 @@
       padding: 20px;
     }
     .factory-content__array_container::after{
-      content:"  数组元素逗号分隔,支持输入 5,3,1,4,2 或 [5,3,1,4,2]";
+      content:"  数组元素逗号分隔,支持输入 例如5,3,1,4,2 或 [5,3,1,4,2]";
+      font-size:12px;
+    }
+    .factory-content__cs_container::after{
+      content:"  样式属性逗号分隔,属性不要带引号 例如font: 20px math, strokeStyle: red, lineWidth: 1";
+      font-size:12px;
+    }
+    .factory-content__tt_container::after{
+      content:"  顶部文字配置逗号分隔,属性不要带引号 例如left:队头,right:队尾";
       font-size:12px;
     }
     .factory-footer{
-      margin-top:100px;
+      margin-top:20px;
     }
     main{
       flex-grow: 1;
@@ -51,7 +59,24 @@
         <h1>数组可视化小工具</h1>
         <div class="factory">
           <div class="factory-content">
-            <p class="factory-content__array_container"><span>数组  </span><input class="factory-content__array_input" type="text"></p>
+            <p class="factory-content__array_container"><span>数组array  </span><input class="factory-content__array_input" type="text"></p>
+            <p class="factory-content__cw_container"><span>单个元素宽度cw  </span><input class="factory-content__cw_input" type="number"></p>
+            <p class="factory-content__ch_container"><span>单个元素高度ch  </span><input class="factory-content__ch_input" type="number"></p>
+            <p class="factory-content__cs_container"><span>自定义样式customStyle  </span><textarea class="factory-content__cs_textarea" rows="5" cols="30"></textarea>
+            <div class="factory-content__bi_container">
+              <span>索引类型bottomIndex  </span>
+              <div>
+                <input class="factory-content__bi_input" type="radio" id="ht" name="bi" value="head tail"
+                        checked>
+                <label for="ht">head tail</label>
+              </div>
+              
+              <div>
+                <input class="factory-content__bi_input" type="radio" id="all" name="bi" value="all">
+                <label for="all">all</label>
+              </div>
+            </div>
+            <p class="factory-content__tt_container"><span>自定义顶部文字topText  </span><textarea class="factory-content__tt_textarea" rows="5" cols="30"></textarea>
           </div>
           <div class="factory-footer">
             <button id="generate">生成</button>
@@ -102,11 +127,43 @@
       if(canvasConfig._canvas){
         canvasConfig._canvas.clearCanvas();
       }
-      const visualArray = new VisualArray("canvas", canvasConfig.array, 60, 60, "all", null, {
-        font: "20px math",
-        strokeStyle: "black",
-        lineWidth: 1,
-      });
+      // 获取cw和ch宽度
+      const cw = document.querySelector(".factory-content__cw_input").valueAsNumber || 60;
+      const ch = document.querySelector(".factory-content__ch_input").valueAsNumber || 60;
+      // 获取customStyle
+      let cs = document.querySelector(".factory-content__cs_textarea").value || { font: "30px math", strokeStyle: "black", lineWidth: 1 };
+      if(typeof cs === 'string'){
+        cs = cs.split(",").reduce((acc, cur)=>{
+          const [key, value] = cur.split(":");
+          console.log(cur.split(":"));
+          acc[key.trim()]= value.trim();
+          return acc;
+        }, {})
+      }
+      // 获取索引类型bottomIndex
+      const bis = document.querySelectorAll(".factory-content__bi_input");
+      let bi = "all";
+      bis.forEach((el)=>{
+        if(el.checked){
+          bi = el.value
+        }
+      })
+      // 获取topText
+      let tt = document.querySelector(".factory-content__tt_textarea").value;
+      if(tt){
+        tt = tt.split(",").reduce((acc, cur)=>{
+          const [key, value] = cur.split(":");
+          if(key === 'left'){
+            acc.data[0] = value
+          }else{
+            acc.data[canvasConfig.array.length - 1] = value
+          }
+          return acc;
+        }, {show: true, data: {}})
+      }
+      console.log(tt);
+
+      const visualArray = new VisualArray("canvas", canvasConfig.array, cw, ch, bi, tt, cs);
       canvasConfig._canvas = visualArray;
     });
     // 清空画布
