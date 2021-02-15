@@ -13,3 +13,6 @@
 
 ### 2021.2.14
 - 增加可视化数组表单：cw和ch、customStyle、bottomIndex，topText
+
+### 2021.2.15
+- 增加shift、pop、unshift、push功能

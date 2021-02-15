@@ -78,6 +78,12 @@
             </div>
             <p class="factory-content__tt_container"><span>自定义顶部文字topText  </span><textarea class="factory-content__tt_textarea" rows="5" cols="30"></textarea>
           </div>
+          <div class="array-actions">
+            <button id="unshift">unshift</button>
+            <button id="push">push</button>
+            <button id="shift">shift</button>
+            <button id="pop">pop</button>
+          </div>
           <div class="factory-footer">
             <button id="generate">生成</button>
             <button id="clear">清空</button>
@@ -164,6 +170,7 @@
       console.log(tt);
 
       const visualArray = new VisualArray("canvas", canvasConfig.array, cw, ch, bi, tt, cs);
+      console.log(canvasConfig.array, cw, ch, bi, tt, cs);
       canvasConfig._canvas = visualArray;
     });
     // 清空画布
@@ -180,6 +187,27 @@
     document.getElementById("export").addEventListener("click", () => {
       if(canvasConfig._canvas){
         canvasConfig._canvas.exportImage();
+      }
+    });
+    // 数组操作
+    document.getElementById("unshift").addEventListener("click", () => {
+      if(canvasConfig._canvas){
+        canvasConfig._canvas.mutateArray("unshift", Math.floor(10*Math.random()));
+      }
+    });
+    document.getElementById("push").addEventListener("click", () => {
+      if(canvasConfig._canvas){
+        canvasConfig._canvas.mutateArray("push", Math.floor(10*Math.random()));
+      }
+    });
+    document.getElementById("shift").addEventListener("click", () => {
+      if(canvasConfig._canvas){
+        canvasConfig._canvas.mutateArray("shift");
+      }
+    });
+    document.getElementById("pop").addEventListener("click", () => {
+      if(canvasConfig._canvas){
+        canvasConfig._canvas.mutateArray("pop");
       }
     });
   </script>

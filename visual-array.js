@@ -14,52 +14,60 @@ class VisualArray {
     array,
     cw = 30,
     ch = 30,
-    bottomIndex,
+    bottomIndex = "head tail",
     topText,
     customStyle = { font: "30px math", strokeStyle: "black", lineWidth: 1 }
   ) {
     if (!containerId) return;
     if (!Array.isArray(array)) return;
-    this.bottomIndex = bottomIndex || "head tail";
+    this.array = array;
+    this.cw = cw;
+    this.ch = cw;
+    this.bottomIndex = bottomIndex;
     this.topText = topText || {
       show: true,
       data: { 0: "头", [array.length - 1]: "尾" },
     };
+    this.customStyle = customStyle;
     this.length = array.length;
     this.numberFont = parseInt(customStyle.font.replace("px", ""));
     // 若已经存在则不重新创建canvas
     this.canvas =
       document.getElementById(containerId).children[0] ||
       document.createElement("canvas");
-    const { width, height } = VisualArray.calculateCanvas(
+    this._calculateCanvas(
       this.length,
       cw,
       ch,
       this.bottomIndex,
       this.topText,
-      this.numberFont
+      this.numberFont,
+      this.customStyle
     );
-    this.canvas.width = width;
-    this.canvas.height = height + 2 * customStyle.lineWidth;
     const isCanvasExist = VisualArray.checkCanvasExist(containerId);
     if (!isCanvasExist) {
       document.body.appendChild(this.canvas);
     }
-    this.ctx = this.canvas.getContext("2d");
-    this.ctx.font = customStyle.font;
-    this.ctx.textAlign = "center";
-
-    this.generateArray(array, cw, ch, this.topText, customStyle);
-    this.generateText(this.topText, cw);
-    this.generateIndex(cw, ch, this.bottomIndex, this.topText);
+    this._configContext();
+    this._generateArray(array, cw, ch, this.topText, customStyle);
+    this._generateText(this.topText, cw);
+    this._generateIndex(cw, ch, this.bottomIndex, this.topText);
     if (!isCanvasExist) {
-      this.appendToContainer(containerId);
+      this._appendToContainer(containerId);
     }
   }
   /**
    * 计算canvas宽度和高度
    */
-  static calculateCanvas(length, cw, ch, bottomIndex, topText, numberFont) {
+  _calculateCanvas(
+    length,
+    cw,
+    ch,
+    bottomIndex,
+    topText,
+    numberFont,
+    customStyle
+  ) {
     const width = cw * length;
     let canvasHeight = ch;
     if (bottomIndex) {
@@ -68,7 +76,10 @@ class VisualArray {
     if (topText.show) {
       canvasHeight += numberFont;
     }
-    const height = canvasHeight;
+    const height = canvasHeight + 2 * customStyle.lineWidth;
+    this.canvas.width = width;
+    this.canvas.height = height;
+
     return { width, height };
   }
   /**
@@ -81,7 +92,7 @@ class VisualArray {
   /**
    * 生成数组
    */
-  generateArray(array, cw, ch, topText, customStyle) {
+  _generateArray(array, cw, ch, topText, customStyle) {
     const { strokeStyle } = customStyle;
     this.ctx.strokeStyle = strokeStyle;
     let y = 0;
@@ -100,11 +111,10 @@ class VisualArray {
   /**
    * 生成顶部文字
    */
-  generateText(topText, cw) {
+  _generateText(topText, cw) {
     if (!topText.show) return;
     let keys = Object.keys(topText.data);
     keys.forEach((key) => {
-      // console.log(key);
       this.ctx.fillText(
         topText.data[key],
         (parseInt(key) + 0.5) * cw,
@@ -115,7 +125,7 @@ class VisualArray {
   /**
    * 生成底部索引
    */
-  generateIndex(cw, ch, bottomIndex, topText) {
+  _generateIndex(cw, ch, bottomIndex, topText) {
     let y = ch;
     if (bottomIndex) {
       y += this.numberFont;
@@ -136,7 +146,7 @@ class VisualArray {
   /**
    * 添加到容器
    */
-  appendToContainer(id) {
+  _appendToContainer(id) {
     const container = document.getElementById(id);
     container.appendChild(this.canvas);
   }
@@ -160,5 +170,60 @@ class VisualArray {
     if (this.ctx) {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
+  }
+  /**
+   * 数组操作unshift、push、shift、pop
+   */
+  mutateArray(action, payload) {
+    this.clearCanvas();
+    if (!["unshift", "push", "shift", "pop"].includes(action)) return;
+    if (action === "unshift" || action === "push") {
+      this.array[action](payload);
+    } else {
+      this.array[action]();
+    }
+    this.length = this.array.length;
+    this._calculateCanvas(
+      this.length,
+      this.cw,
+      this.ch,
+      this.bottomIndex,
+      this.topText,
+      this.numberFont,
+      this.customStyle
+    );
+    this._configContext();
+    let tailIndex = this.array.length;
+    if (action === "unshift" || action === "push") {
+      tailIndex -= 2;
+    }
+    this.topText.data = {
+      0: this.topText.data[0],
+      [this.array.length - 1]: this.topText.data[tailIndex],
+    };
+
+    this._rerender();
+  }
+  /**
+   * 重新绘制
+   */
+  _rerender() {
+    this._generateArray(
+      this.array,
+      this.cw,
+      this.ch,
+      this.topText,
+      this.customStyle
+    );
+    this._generateText(this.topText, this.cw);
+    this._generateIndex(this.cw, this.ch, this.bottomIndex, this.topText);
+  }
+  /**
+   * 配置context
+   */
+  _configContext() {
+    this.ctx = this.canvas.getContext("2d");
+    this.ctx.font = this.customStyle.font;
+    this.ctx.textAlign = "center";
   }
 }
