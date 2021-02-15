@@ -1,0 +1,21 @@
+{
+  "name": "visual-array",
+  "version": "1.0.13",
+  "description": "canvas可视化数组。",
+  "main": "./dist/visual-array.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "parcel visual-array.js --target browser --out-dir dist",
+    "publish": "npm version patch && npm publish --registry http://registry.npmjs.org && git push"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FrankKai/visual-array.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FrankKai/visual-array/issues"
+  },
+  "homepage": "https://github.com/FrankKai/visual-array#readme"
+}
