@@ -227,3 +227,5 @@ class VisualArray {
     this.ctx.textAlign = "center";
   }
 }
+
+module.exports = VisualArray;

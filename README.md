@@ -13,10 +13,9 @@ canvas可视化数组。
 - 增加shift、pop、unshift、push功能
 
 ## 亟需完成
-- 增加旋转功能：横向、竖向
-- 部署到云服务器，公网访问
-- 开发微信小程序版本
-
+- 发布visual-array npm包
+- 使用typescript重构visual-array
+- 增加vue，react使用示例及使用说明
 
 效果图：
 <img src="https://i.imgur.com/SlqTNPE.png" >
