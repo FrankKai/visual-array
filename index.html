@@ -99,7 +99,8 @@
       </footer>
     </div>
   </body>
-  <script src="./visual-array.js"></script>
+  <script>var exports = {};</script>
+  <script src="./dist/visual-array.js"></script>
   <script>
     // const arr = [2, 3, 1, 5, 6, 9, 2, 6, 7];
     // const visualArray = new VisualArray("canvas", arr, 60, 60, "all", null, {
@@ -169,7 +170,7 @@
       }
       console.log(tt);
 
-      const visualArray = new VisualArray("canvas", canvasConfig.array, cw, ch, bi, tt, cs);
+      const visualArray = new VisualArray({containerId: "canvas", array: canvasConfig.array, cw, ch, bottomIndex: bi, topText:tt, customStyle:cs});
       console.log(canvasConfig.array, cw, ch, bi, tt, cs);
       canvasConfig._canvas = visualArray;
     });
