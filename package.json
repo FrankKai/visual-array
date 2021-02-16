@@ -1,6 +1,6 @@
 {
   "name": "visual-array",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "canvas可视化数组。",
   "main": "visual-array.js",
   "scripts": {
