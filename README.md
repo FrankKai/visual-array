@@ -19,6 +19,12 @@ canvas可视化数组。
 
 ### 使用说明
 
+#### 安装
+```shell
+npm i visual-array
+yarn add visual-array
+```
+
 #### vue demo
 ```html
 <template>
