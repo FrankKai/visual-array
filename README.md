@@ -1,5 +1,5 @@
 # visual-array
-canvas可视化数组。
+基于canvas的数组可视化类，支持了一些常用功能。
 
 ### 功能介绍
 - 支持通过一组数字，生成一个可视化的数组结构
@@ -10,7 +10,6 @@ canvas可视化数组。
 - 支持导出图片
 - 支持shift、pop、unshift、push功能
 - 支持在vue，react中使用
-- 使用typescript重构visual-array
 
 ### 效果图
 <img src="https://i.imgur.com/SlqTNPE.png" >
