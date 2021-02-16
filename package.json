@@ -5,7 +5,7 @@
   "main": "./dist/visual-array.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "publish": "npm version patch && npm publish --registry http://registry.npmjs.org && git push"
+    "pub": "npm version patch && npm publish --registry http://registry.npmjs.org && git push"
   },
   "repository": {
     "type": "git",
