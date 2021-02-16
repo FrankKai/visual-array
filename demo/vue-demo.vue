@@ -17,12 +17,12 @@ export default {
       customStyle: null,
       _canvas: null,
     };
-    const visualArray = new VisualArray(
-      "canvas",
-      canvasConfig.array,
-      canvasConfig.cw,
-      canvasConfig.ch
-    );
+    const visualArray = new VisualArray({
+      containerId: "canvas",
+      array: canvasConfig.array,
+      cw: canvasConfig.cw,
+      ch: canvasConfig.ch
+    });
     canvasConfig._canvas = visualArray;
   },
 };
