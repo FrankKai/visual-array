@@ -19,3 +19,4 @@
 
 ### 2021.2.16
 - 增加vue，react使用demo
+- 使用typescript重构visual-array

@@ -10,8 +10,6 @@ canvas可视化数组。
 - 支持导出图片
 - 支持shift、pop、unshift、push功能
 - 支持在vue，react中使用
-
-### 亟需完成
 - 使用typescript重构visual-array
 
 ### 效果图
@@ -46,12 +44,12 @@ export default {
       customStyle: null,
       _canvas: null,
     };
-    const visualArray = new VisualArray(
-      "canvas",
-      canvasConfig.array,
-      canvasConfig.cw,
-      canvasConfig.ch
-    );
+    const visualArray = new VisualArray({
+      containerId: "canvas",
+      array: canvasConfig.array,
+      cw: canvasConfig.cw,
+      ch: canvasConfig.ch
+    });
     canvasConfig._canvas = visualArray;
   },
 };
@@ -76,12 +74,12 @@ function Demo() {
       customStyle: null,
       _canvas: null,
     };
-    const visualArray = new VisualArray(
-      "canvas",
-      canvasConfig.array,
-      canvasConfig.cw,
-      canvasConfig.ch
-    );
+    const visualArray = new VisualArray({
+      containerId: "canvas",
+      array: canvasConfig.array,
+      cw: canvasConfig.cw,
+      ch: canvasConfig.ch,
+    });
     canvasConfig._canvas = visualArray;
   }, []);
   return (
