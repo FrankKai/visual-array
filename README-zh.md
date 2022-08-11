@@ -1,31 +1,31 @@
-[中文简体](./README-zh.md)
+[English](./README.md)
 
 # visual-array
-Canvas-based array visualization class that supports some common functions.
+基于canvas的数组可视化类，支持了一些常用功能。
 
-### Features
-- Supports generating a visual array structure from a set of numbers
-- Supports customizing the width and height of a single element, and supports dynamic scaling
-- Support custom single element font, strokeStyle, fillStyle
-- Supports selecting the index that exposes the bottom: all, head and tail, close
-- Support for text at the top of custom arrays: {index0: value0, index1: value1}
-- Support for exporting pictures
-- Support shift, pop, unshift, push functions
-- Support use in vue, react
+### 功能介绍
+- 支持通过一组数字，生成一个可视化的数组结构
+- 支持自定义单个元素的width和height，支持动态伸缩
+- 支持自定义单个元素font，strokeStyle，fillStyle
+- 支持选择暴露出底部的index: all, 头尾, 关闭
+- 支持自定义数组顶部的文字：{index0: value0, index1: value1}
+- 支持导出图片
+- 支持shift、pop、unshift、push功能
+- 支持在vue，react中使用
 
-### Glance
-<img src="https://imgur.com/SpBfX9O.png" >
+### 效果图
+<img src="https://i.imgur.com/SlqTNPE.png" >
 
-### Instructions for use
+### 使用说明
 
-#### Install
+#### 安装
 ```shell
 npm i visual-array
 yarn add visual-array
 ```
 
 #### vue demo
-online demo: https://codesandbox.io/s/visual-array-vue-en-qjj56f
+在线demo: https://codesandbox.io/s/visual-array-vue-lzx6yf
 
 
 ```html
@@ -44,7 +44,7 @@ export default {
       cw: 60,
       ch: 60,
       bottomIndex: null,
-      topText: { show: true, data: { 0: " head", 3: "tail" } },
+      topText: null,
       customStyle: null,
       _canvas: null,
     };
@@ -52,8 +52,7 @@ export default {
       containerId: "canvas",
       array: canvasConfig.array,
       cw: canvasConfig.cw,
-      ch: canvasConfig.ch,
-      topText: canvasConfig.topText,
+      ch: canvasConfig.ch
     });
     canvasConfig._canvas = visualArray;
   },
@@ -64,7 +63,7 @@ export default {
 ```
 
 #### react demo
-online demo: https://codesandbox.io/s/visual-array-react-en-00wh0m
+在线demo: https://codesandbox.io/s/visual-array-react-3xtqjh
 
 ```js
 import { useEffect } from "react";
@@ -77,7 +76,7 @@ function Demo() {
       cw: 60,
       ch: 60,
       bottomIndex: null,
-      topText: { show: true, data: { 0: " head", 3: "tail" } },
+      topText: null,
       customStyle: null,
       _canvas: null,
     };
@@ -86,7 +85,6 @@ function Demo() {
       array: canvasConfig.array,
       cw: canvasConfig.cw,
       ch: canvasConfig.ch,
-      topText: canvasConfig.topText,
     });
     canvasConfig._canvas = visualArray;
   }, []);
@@ -100,4 +98,4 @@ function Demo() {
 export default Demo;
 ```
 
-Enjoy it！
+快试试吧！
